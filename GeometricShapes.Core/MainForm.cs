@@ -183,7 +183,7 @@ namespace GeometricShapes.App
                 case ShapeType.Circle:
                     return new CircleShape(x, y, currentColor, 50);
                 case ShapeType.Triangle:
-                    return new TriangleShape(x, y, currentColor, 80);
+                    return new TriangleShape(x, y, currentColor, 80, 80, 80);
                 case ShapeType.Square:
                     return new RectangleShape(x, y, currentColor, 80, 80);
                 case ShapeType.Ellipse:
@@ -317,20 +317,40 @@ namespace GeometricShapes.App
         {
             if (selectedShape != null)
             {
-                var oldBounds = selectedShape.GetBoundingRectangle();
-
-                using (var resizeForm = new ResizeForm(selectedShape))
+                if (selectedShape is TriangleShape triangleShape)
                 {
-                    if (resizeForm.ShowDialog() == DialogResult.OK)
-                    {
-                        manager.ExecuteCommand(new ResizeCommand(
-                            selectedShape,
-                            oldBounds.Width,
-                            oldBounds.Height,
-                            resizeForm.NewWidth,
-                            resizeForm.NewHeight));
+                    var oldDimensions = triangleShape.GetDimensions();
 
-                        drawingPanel.Invalidate();
+                    using (var resizeForm = new ResizeForm(triangleShape))
+                    {
+                        if (resizeForm.ShowDialog() == DialogResult.OK && resizeForm.TriangleDimensions != null)
+                        {
+                            manager.ExecuteCommand(new ResizeCommand(
+                                triangleShape,
+                                oldDimensions,
+                                resizeForm.TriangleDimensions));
+
+                            drawingPanel.Invalidate();
+                        }
+                    }
+                }
+                else
+                {
+                    var oldBounds = selectedShape.GetBoundingRectangle();
+
+                    using (var resizeForm = new ResizeForm(selectedShape))
+                    {
+                        if (resizeForm.ShowDialog() == DialogResult.OK && resizeForm.NewWidth.HasValue && resizeForm.NewHeight.HasValue)
+                        {
+                            manager.ExecuteCommand(new ResizeCommand(
+                                selectedShape,
+                                oldBounds.Width,
+                                oldBounds.Height,
+                                resizeForm.NewWidth.Value,
+                                resizeForm.NewHeight.Value));
+
+                            drawingPanel.Invalidate();
+                        }
                     }
                 }
             }
