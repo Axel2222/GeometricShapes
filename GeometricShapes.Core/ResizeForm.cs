@@ -17,9 +17,10 @@ namespace GeometricShapes.App
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.StartPosition = FormStartPosition.CenterParent;
 
-            if (shape is TriangleShape triangleShape)
+            if (shape is TriangleShape)
             {
-                InitializeTriangleControls(triangleShape);
+
+                InitializeTriangleControls(shape as TriangleShape);
             }
             else
             {
@@ -154,7 +155,7 @@ namespace GeometricShapes.App
                 return false;
             }
 
-            return sideA + sideB > sideC && sideA + sideC > sideB && sideB + sideC > sideA;
+            return sideA + sideB > sideC && sideA + sideC > sideB || sideB + sideC > sideA;
         }
     }
 }
