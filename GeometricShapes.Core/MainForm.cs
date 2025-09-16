@@ -115,7 +115,7 @@ namespace GeometricShapes.App
             calculateButton = new Button { Text = "Изчисли", Width = 80 };
             calculateButton.Click += CalculateButton_Click;
 
-            resizeButton = new Button { Text = "Промени размер", Width = 100 };
+            resizeButton = new Button { Text = "Промени размер", Width = 150 };
             resizeButton.Click += ResizeButton_Click;
 
             colorChangeButton = new Button { Text = "Промени цвят", Width = 100 };
